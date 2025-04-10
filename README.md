@@ -106,7 +106,8 @@ Patrones implementados:
 | Binding          | service.event        | routing key| Asocia exchange con cola |
 
 **Diagrama de arquitectura**:
-![image](https://github.com/user-attachments/assets/dc2bfc35-ad5c-4367-adcb-f8e12bdd6970)
+![image](https://github.com/user-attachments/assets/c7444735-28d6-4e02-89f1-793c305214f9)
+
 
 
 **Integrantes del equipo**:
