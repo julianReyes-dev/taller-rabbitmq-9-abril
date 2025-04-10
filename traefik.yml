@@ -1,0 +1,15 @@
+entryPoints:
+  web:
+    address: ":80"
+
+api:
+  dashboard: true
+  insecure: false  # Seguridad habilitada para dashboard
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: "traefik_network"
+
+log:
+  level: DEBUG  # Para mejor diagnóstico

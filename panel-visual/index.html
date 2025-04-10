@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monitor de Infraestructura</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { display: flex; flex-wrap: wrap; }
+        .panel { border: 1px solid #ddd; padding: 15px; margin: 10px; min-width: 300px; }
+        h1 { color: #333; }
+        .status { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Monitor de Infraestructura</h1>
+    
+    <div class="container">
+        <div class="panel">
+            <h2>Servicios Activos</h2>
+            <ul>
+                <li>API Registro: <span class="status">Activo</span></li>
+                <li>Cliente Uno: <span class="status">Activo</span></li>
+                <li>Cliente Dos: <span class="status">Activo</span></li>
+            </ul>
+        </div>
+        
+        <div class="panel">
+            <h2>Estadísticas de Registro</h2>
+            <div id="registros"></div>
+        </div>
+        
+        <div class="panel">
+            <h2>Rutas Disponibles</h2>
+            <ul>
+                <li><a href="/cliente/uno">/cliente/uno</a></li>
+                <li><a href="/cliente/dos">/cliente/dos</a></li>
+                <li><a href="/monitor">/monitor</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+      async function updateStats() {
+        try {
+          // Usamos la ruta completa a través de Traefik
+          const response = await fetch('http://localhost/reporte/estado', {
+            headers: {
+              'Authorization': 'Basic ' + btoa('admin:secret')
+            }
+          });
+          
+          if (!response.ok) throw new Error('Error en la respuesta');
+          
+          const data = await response.json();
+          
+          let html = `<p>Total registros: <strong>${data.totalRegistros}</strong></p>`;
+          html += '<h3>Registros por servicio:</h3><ul>';
+          
+          for (const [service, count] of Object.entries(data.servicios)) {
+            html += `<li>${service}: ${count}</li>`;
+          }
+          
+          document.getElementById('registros').innerHTML = html;
+        } catch (error) {
+          console.error('Error:', error);
+          document.getElementById('registros').innerHTML = 
+            `<p class="error">Error obteniendo estadísticas: ${error.message}</p>`;
+        }
+      }
+
+      // Actualizar cada 3 segundos
+      updateStats();
+      setInterval(updateStats, 3000);
+    </script>
+</body>
+</html>
