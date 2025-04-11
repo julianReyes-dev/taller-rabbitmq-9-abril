@@ -61,7 +61,7 @@ Puertos expuestos:
 - 15672 (Management UI)
 
 ![image](https://github.com/user-attachments/assets/2cfca8b0-6d87-4950-a65a-c38a156307cf)
-![image](https://github.com/user-attachments/assets/c0a44bf4-cbed-4815-bcbe-7dbaeee6ad8a)
+![Image](https://github.com/user-attachments/assets/66809730-8ea0-4822-b785-acc06c075479)
 
 ### 2. Publicación de Eventos desde Clientes
 Los clientes ahora usan AMQP en lugar de HTTP  
