@@ -4,7 +4,7 @@ entryPoints:
 
 api:
   dashboard: true
-  insecure: false  # Seguridad habilitada para dashboard
+  insecure: false
 
 providers:
   docker:
@@ -12,4 +12,4 @@ providers:
     network: "traefik_network"
 
 log:
-  level: DEBUG  # Para mejor diagnóstico
+  level: DEBUG
