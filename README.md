@@ -60,7 +60,7 @@ Puertos expuestos:
 - 5672 (AMQP)
 - 15672 (Management UI)
 
-![image](https://github.com/user-attachments/assets/2cfca8b0-6d87-4950-a65a-c38a156307cf)
+![Image](https://github.com/user-attachments/assets/9a7b75f5-0f2c-4eb1-9bda-e7b281600185)
 ![Image](https://github.com/user-attachments/assets/66809730-8ea0-4822-b785-acc06c075479)
 
 ### 2. Publicación de Eventos desde Clientes
