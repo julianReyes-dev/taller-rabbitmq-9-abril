@@ -1,20 +1,29 @@
 const amqp = require('amqplib');
 const express = require('express');
 const app = express();
+
 const serviceId = process.env.SERVICE_ID || 'unknown';
 
-// Configuración RabbitMQ
 const RABBITMQ_URL = 'amqp://admin:secret@rabbitmq';
 const EXCHANGE = 'analytics_exchange';
 const ROUTING_KEY = 'service.event';
 
-// Conexión y canal RabbitMQ
 let channel;
+
 async function connectRabbitMQ() {
   try {
     const connection = await amqp.connect(RABBITMQ_URL);
+    connection.on('error', err => {
+      console.error(`[${serviceId}] Error en conexión RabbitMQ:`, err.message);
+    });
+    connection.on('close', () => {
+      console.warn(`[${serviceId}] Conexión RabbitMQ cerrada. Reintentando...`);
+      setTimeout(connectRabbitMQ, 5000);
+    });
+
     channel = await connection.createChannel();
     await channel.assertExchange(EXCHANGE, 'direct', { durable: true });
+
     console.log(`[${serviceId}] Conectado a RabbitMQ`);
   } catch (error) {
     console.error(`[${serviceId}] Error conectando a RabbitMQ:`, error.message);
@@ -22,18 +31,20 @@ async function connectRabbitMQ() {
   }
 }
 
-// Publicar mensaje
 async function publishEvent() {
-  if (!channel) return;
-  
+  if (!channel) {
+    console.warn(`[${serviceId}] Canal de RabbitMQ no está listo aún`);
+    return;
+  }
+
   const message = {
     serviceId,
     eventType: 'request',
     timestamp: new Date().toISOString()
   };
-  
+
   try {
-    await channel.publish(
+    channel.publish(
       EXCHANGE,
       ROUTING_KEY,
       Buffer.from(JSON.stringify(message)),
@@ -45,17 +56,17 @@ async function publishEvent() {
   }
 }
 
-// Conectar al iniciar
 connectRabbitMQ();
 
-// Publicar eventos periódicos
 setInterval(publishEvent, 5000);
 
 app.get('/', (req, res) => {
-  publishEvent(); // También publicar en cada acceso
+  publishEvent();
   res.send(`Cliente App - Instancia ${serviceId} | Registrado`);
 });
 
-app.listen(3001, () => {
-  console.log(`Cliente ${serviceId} escuchando en puerto 3001`);
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Cliente ${serviceId} escuchando en puerto ${PORT}`);
 });
+
