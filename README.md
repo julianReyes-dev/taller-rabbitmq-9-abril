@@ -77,7 +77,7 @@ Cliente-uno:
 ![image](https://github.com/user-attachments/assets/2dbc6bd4-4e78-4534-b768-6af362a34d37)
 
 Cliente-dos:
-![image](https://github.com/user-attachments/assets/f24218a6-0ee2-476c-8f91-406c670f1ded)
+![Image](https://github.com/user-attachments/assets/4fec2ee6-788f-4191-b5ec-20e92e8cc04d)
 
 
 ### 3. Consumo de Eventos en Servicio Analíticas
